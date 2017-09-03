@@ -77,3 +77,6 @@ class UrlPreview {
 UrlPreview::addPreviewer(new Previewer\OpenGraph);
 UrlPreview::addPreviewer(new Previewer\SimpleHtml, 100);
 
+// Formatters to get extra Twitter & Instagram profile info 
+UrlPreview::addFormatter(new Formatter\InstagramFromOpenGraph);
+UrlPreview::addFormatter(new Formatter\TwitterFields);
