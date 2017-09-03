@@ -1,0 +1,19 @@
+{
+    "name": "layered/url-preview",
+    "description": "Get data from any URL from the internet",
+    "type": "library",
+    "require": {
+        "fabpot/goutte": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "Andrei Igna",
+            "email": "andrei.igna@layered.studio"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Layered\\": "src/"
+        }
+    }
+}
