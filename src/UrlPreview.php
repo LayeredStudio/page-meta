@@ -75,4 +75,5 @@ class UrlPreview {
 
 // add basic Previewers
 UrlPreview::addPreviewer(new Previewer\OpenGraph);
+UrlPreview::addPreviewer(new Previewer\SimpleHtml, 100);
 
