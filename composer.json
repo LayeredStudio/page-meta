@@ -2,6 +2,7 @@
     "name": "layered/url-preview",
     "description": "Get preview data from any URL from the internet",
     "type": "library",
+    "license": "MIT",
     "keywords": ["scraper", "url-preview", "opengraph"],
     "require": {
         "fabpot/goutte": "^3.2"
@@ -12,6 +13,11 @@
             "email": "andrei.igna@layered.studio"
         }
     ],
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+    },
     "autoload": {
         "psr-4": {
             "Layered\\": "src/"

@@ -15,6 +15,9 @@ URL Preview
 #### Installation
 
 Add `layered/url-preview` as a require dependency in your `composer.json` file:
+``` bash
+$ composer require layered/url-preview
+```
 
 #### Usage
 
@@ -56,4 +59,4 @@ Each URL may return extra fields, present in OpenGraph tags or added by a `Layer
 ## More
 
 Please report any issues here on GitHub.
-Any contributions are welcome (please get in touch before submitting a PR).
+[Any contributions are welcome](CONTRIBUTING.md)
