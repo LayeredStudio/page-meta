@@ -1,7 +1,8 @@
 {
     "name": "layered/url-preview",
-    "description": "Get data from any URL from the internet",
+    "description": "Get preview data from any URL from the internet",
     "type": "library",
+    "keywords": ["scraper", "url-preview", "opengraph"],
     "require": {
         "fabpot/goutte": "^3.2"
     },

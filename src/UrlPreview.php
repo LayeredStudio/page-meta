@@ -34,7 +34,7 @@ class UrlPreview {
 					if (!$this->previewer && $previewer->test($crawler)) {
 						$this->previewer = $previewer;
 						$this->data = $previewer->getData($crawler);
-						$this->data['previewer'] = $previewer->getName();
+						//$this->data['previewer'] = $previewer->getName();
 					}
 				}
 			}
@@ -77,6 +77,6 @@ class UrlPreview {
 UrlPreview::addPreviewer(new Previewer\OpenGraph);
 UrlPreview::addPreviewer(new Previewer\SimpleHtml, 100);
 
-// Formatters to get extra Twitter & Instagram profile info 
+// Formatters to get extra Twitter & Instagram profile info
 UrlPreview::addFormatter(new Formatter\InstagramFromOpenGraph);
 UrlPreview::addFormatter(new Formatter\TwitterFields);
