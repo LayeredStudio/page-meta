@@ -3,7 +3,7 @@
     "description": "Get preview data from any URL from the internet",
     "type": "library",
     "license": "MIT",
-    "keywords": ["scraper", "url-preview", "opengraph"],
+    "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
     "require": {
         "fabpot/goutte": "^3.2"
     },
