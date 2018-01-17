@@ -8,7 +8,6 @@ URL Preview
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
 * Enable file/image upload from URLs
-* *many more*
 
 ## How to use
 

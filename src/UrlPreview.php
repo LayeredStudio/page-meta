@@ -110,12 +110,43 @@ class UrlPreview {
 		}
 
 		$url = $this->parseUrl($this->crawler->getUri());
+		$html = $this->crawler->html();
 
 		$site = [
-			'url'	=>	$url['scheme'] . '://' . $url['host'],
-			'name'	=>	isset($this->data['site_name']) ? $this->data['site_name'] : '',
-			'icon'	=>	''
+			'url'			=>	$url['scheme'] . '://' . $url['host'],
+			'name'			=>	isset($this->data['site_name']) ? $this->data['site_name'] : '',
+			'icon'			=>	'',
+			'secure'		=>	null,
+			'responsive'	=>	null,
+			'mobileSite'	=>	null,
+			'tracking'		=>	[],
+			'author'		=>	null,
+			'generator'		=>	null
 		];
+
+		// check if site has security
+		$site['secure'] = strpos($this->crawler->getUri(), 'https://') !== false;
+
+		// basic check for responsiveness
+		$site['responsive'] = !!count($this->crawler->filter('meta[name="viewport"]'));
+
+		// checks for tracking codes
+		if (stripos($html, 'google-analytics') !== false) {
+			$site['tracking'][] = 'Google Analytics';
+		}
+		if (stripos($html, 'piwik') !== false) {
+			$site['tracking'][] = 'Piwik';
+		}
+
+		// check Generator
+		if (count($metaGenerator = $this->crawler->filter('meta[name="generator"]'))) {
+			$site['generator'] = $metaGenerator->attr('content');
+		}
+
+		// check Author
+		if (count($metaAuthor = $this->crawler->filter('meta[name="author"]'))) {
+			$site['author'] = $metaAuthor->attr('content');
+		}
 
 		try {
 			$this->crawler->filter('link[rel=apple-touch-icon]')->each(function($link) use(&$site, $url) {

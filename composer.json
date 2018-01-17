@@ -1,6 +1,6 @@
 {
     "name": "layered/url-preview",
-    "description": "Get preview data from any URL from the internet",
+    "description": "Get preview data on any URL from the internet!",
     "type": "library",
     "license": "MIT",
     "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
