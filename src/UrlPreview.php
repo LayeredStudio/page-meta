@@ -158,6 +158,11 @@ class UrlPreview {
 					$site['icon'] = $this->parseImageUrl($this->crawler->getUri(), $link->attr('href'));
 				});
 			}
+			if (empty($site['icon'])) {
+				$this->crawler->filter('link[rel="shortcut icon"]')->each(function($link) use(&$site, $url) {
+					$site['icon'] = $this->parseImageUrl($this->crawler->getUri(), $link->attr('href'));
+				});
+			}
 		} catch (\Exception $e) {
 			// it's fine
 		}
