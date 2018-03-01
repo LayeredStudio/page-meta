@@ -1,16 +1,15 @@
 <?php
+namespace Layered\PageMeta;
 
-namespace Layered;
-
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
 use Goutte\Client;
-
+use Layered\PageMeta\Event\PageScrapeEvent;
+use Layered\PageMeta\Event\DataFilterEvent;
 
 class UrlPreview {
+	private static $dispatcher;
 
-	private static $previewers = [];
-	private static $formatters = [];
-
-	protected $previewer = false;
 	protected $crawler = null;
 	protected $url;
 	protected $data = [];
@@ -71,6 +70,9 @@ class UrlPreview {
 
 		return $this->data;
 	}
+		// start scraping page
+		$pageScrapeEvent = new PageScrapeEvent($this->data, $this->crawler);
+		$this->data = self::dispatcher()->dispatch($pageScrapeEvent::NAME, $pageScrapeEvent)->getData();
 
 	public function getPreview() {
 
@@ -107,6 +109,9 @@ class UrlPreview {
 
 		if (!$this->crawler) {
 			$this->process();
+	private static function dispatcher() {
+		if (!self::$dispatcher) {
+			self::$dispatcher = new EventDispatcher();
 		}
 
 		$url = $this->parseUrl($this->crawler->getUri());
@@ -163,14 +168,16 @@ class UrlPreview {
 		}
 
 		return $site;
+		return self::$dispatcher;
 	}
 
-	public function getEmbed() {
-		return $this->embedData;
+	public static function on(string $eventName, callable $listener, $priority = 0) {
+		self::dispatcher()->addListener($eventName, $listener, $priority);
 	}
 
-	public static function addPreviewer($previewer, $priority = 10) {
-		self::$previewers[$priority][] = $previewer;
+	public function getData(string $section) {
+		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section);
+		return self::dispatcher()->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
 	}
 
 	public static function addFormatter($formatter, $priority = 10) {

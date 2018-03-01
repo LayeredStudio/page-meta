@@ -1,11 +1,12 @@
 {
-    "name": "layered/url-preview",
+    "name": "layered/page-meta",
     "description": "Get preview data on any URL from the internet!",
     "type": "library",
     "license": "MIT",
     "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
     "require": {
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "~3.2",
+        "symfony/event-dispatcher": "^4.0"
     },
     "authors": [
         {
@@ -20,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Layered\\": "src/"
+            "Layered\\PageMeta\\": "src/"
         }
     }
 }
