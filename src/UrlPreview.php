@@ -88,10 +88,14 @@ class UrlPreview {
 UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
 UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
 
-// add basic Previewers
-UrlPreview::addPreviewer(new Previewer\OpenGraph);
-UrlPreview::addPreviewer(new Previewer\SimpleHtml, 100);
+// Convert string image url to image array
+UrlPreview::on('data.filter', function(Event $event) {
+	$data = $event->getData();
 
-// Formatters to get extra Twitter & Instagram profile info
-UrlPreview::addFormatter(new Formatter\InstagramFromOpenGraph);
-UrlPreview::addFormatter(new Formatter\TwitterFields);
+	if (isset($data['image']) && is_string($data['image']) && filter_var($data['image'], FILTER_VALIDATE_URL)) {
+		$data['image'] = [
+			'url'	=>	$data['image']
+		];
+		$event->setData($data);
+	}
+});
