@@ -77,23 +77,9 @@ class UrlPreview {
 		];
 	}
 
-	protected function parseUrl($url) {
-		// TODO maybe use a better parser
+	protected function parseUrl(string $url) {
+		// TODO maybe use a better URL parser
 		return parse_url($url);
-	}
-
-	protected function parseImageUrl($siteUrl, $imageUrl) {
-
-		if (strpos($imageUrl, 'http') === false) {
-			if ($imageUrl['0'] === '/') {
-				$siteUrl = $this->parseUrl($siteUrl);
-				$imageUrl = $siteUrl['scheme'] . '://' . $siteUrl['host'] . $imageUrl;
-			} else {
-				$imageUrl = rtrim($siteUrl, '/') . '/' . $imageUrl;
-			}
-		}
-
-		return $imageUrl;
 	}
 
 }
