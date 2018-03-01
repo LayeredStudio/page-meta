@@ -88,6 +88,7 @@ class UrlPreview {
 UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
 UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
 UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
+UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
 
 // Convert string image url to image array
 UrlPreview::on('data.filter', function(Event $event) {
