@@ -1,3 +1,6 @@
+<h1 align="center" style="border-bottom: none;">Page Meta 🕵</h1>
+<h3 align="center">Get detailed info for any URL on the internet</h3>
+
 Page Meta 🕵
 =========
 
@@ -105,11 +108,11 @@ Attach an event on `UrlPreview` for data processing or scrape process. Arguments
   - `page.scrape` - fired when the scraping process starts
   - `data.filter` - fired when data is requested by `getData()` or `getAll()` methods
 - `$listener` - a callable reference, which will get the `$event` parameter with available data
-- `priority` - order on which the callable should be executed
+- `$priority` - order on which the callable should be executed
 
 
 ### Extending the library
-If there's need to more scraped data for a URL, more functionality can be attached to the **PageMeta** library. Example:
+If there's need to more scraped data for a URL, more functionality can be attached to the **PageMeta** library. Example for returing the 'Terms and Conditions' link from pages:
 ```
 use Symfony\Component\EventDispatcher\Event;
 
