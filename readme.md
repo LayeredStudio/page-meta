@@ -1,8 +1,5 @@
 <h1 align="center" style="border-bottom: none;">Page Meta 🕵</h1>
-<h3 align="center">Get detailed info for any URL on the internet</h3>
-
-Page Meta 🕵
-=========
+<h3 align="center">Detailed info for any URL on the internet</h3>
 
 **Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
 It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
