@@ -1,80 +1,134 @@
-URL Preview
+Page Meta 🕵
 =========
 
-**URL Preview** is a PHP library than can get preview info on any URL from the internet! It uses data from [OpenGraph](http://ogp.me/) tags with fallback to HTML meta tags. No API Keys or Tokens needed
+**Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
+It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
 
 ## Use cases
-
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
-* Enable file/image upload from URLs
+* Extract info from a user-submitted URL
 
 ## How to use
 
 #### Installation
 
-Add `layered/url-preview` as a require dependency in your `composer.json` file:
+Add `layered/page-meta` as a dependency in your project's `composer.json` file:
 ``` bash
-$ composer require layered/url-preview
+$ composer require layered/page-meta
 ```
 
 #### Usage
 
-For each URL, create a `UrlPreview` instance with URL as first argument. Preview data is retrieved with `getPreview()`, `getProfile()`, `getSite()` and `getEmbed()` methods:
+Create a `UrlPreview` instance with URL as first argument. Preview data is retrieved with `getData($section)` or `getAll()` methods:
 ```
-$preview = new Layered\UrlPreview('https://instagr.am/p/BYOgma8hoUK/');
+require 'vendor/autoload.php';
 
-$preview->getPreview();   // preview data
-$preview->getProfile();   // info about user profile / author
-$preview->getSite();      // info about the website
-$preview->getEmbed();     // embed code for URL, if embeddable
+$preview = new Layered\PageMeta\UrlPreview('https://www.instagram.com/p/BbRyo_Kjqt1/');
+$preview->getAll();
 ```
 
-#### Preview data
+#### Returned data
 
-`getPreview()` method returns `Array` with data for URL with following structure:
+Returned data will be an `Array` with following format:
 ```
-[
-  'type'        =>  'photo',     // content type: website, article, photo, etc
-  'url'         =>  'https://www.instagram.com/p/BYOgma8hoUK/',   // canonical URL: follows redirects, formatted by site
-  'title'       =>  'Instagram post by Andrei • Aug 25, 2017 at 6:23pm UTC',
-  'description' =>  'Who needs a gym membership when there’s this? Outdoor gym, on the beach #barcelona #beach #gym…',
-  'image'       =>  'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e35/21149037_113894809286463_3471808960858685440_n.jpg'   // URL of preview image or Array with url, width, height for image
-]
-```
-
-#### Profile info
-
-`getProfile()` method returns `false` OR `Array` with info about page author / profile. It contains data present in OpenGraph tags or added by a `Layered\UrlPreview\Formatter`. Example for Twitter & Instagram URLS:
-```
-[
-  'name'        =>  'Andrei',
-  'username'    =>  '@andreihere',
-  'url'         =>  'https://www.instagram.com/andreihere/'
-]
-```
-
-#### Site info
-
-`getSite()` method returns info about current website. It contains data present in OpenGraph tags or HTML meta tags.
-```
-[
-  'name'        =>  'Instagram',
-  'url'         =>  'https://www.instagram.com',
-  'icon'        =>  'https://www.instagram.com/static/images/ico/favicon-192.png/b407fa101800.png'
-]
+{
+	"site": {
+		"secure":		true,
+		"url":			"https:\/\/www.instagram.com",
+		"icon":			"https:\/\/www.instagram.com\/static\/images\/ico\/favicon-192.png\/b407fa101800.png",
+		"language":		"en",
+		"responsive":	true,
+		"name":			"Instagram"
+	},
+	"page": {
+		"type":			"photo",
+		"url":			"https:\/\/www.instagram.com\/p\/BbRyo_Kjqt1\/",
+		"title":		"GitHub on Instagram",
+		"description":	"There\u2019s still time to join the #GitHubGameOff and build a game inspired by throwbacks. Get started\u2026",
+		"image":		{
+			"url": "https:\/\/scontent-mad1-1.cdninstagram.com\/vp\/73b1790d77548031327e64ee83196706\/5B4AD567\/t51.2885-15\/e35\/23421974_1768724519826754_3855913942043852800_n.jpg"
+		}
+	},
+	"profile": {
+		"name":			"GitHub",
+		"username":		"@github",
+		"url":			"https:\/\/www.instagram.com\/github\/"
+	}
+}
 ```
 
-#### Embed code
+## Public API
+`UrlPreview` class provides the following public methods:
 
-`getEmbed()` method returns `false` OR `Array` with data for embedding the URL. Data is retrieved from oEmbed
+#### `__construct(string $url)`
+Load and start the scrape process for any valid URL
+
+**Return:** UrlPreview instance
+
+#### `getAll()`
+Get all data scraped from page
+**Return:** `Array` with scraped data in following format
+- `site` - info about the website
+  - `url` - main site URL
+  - `name` - site name, ex: 'Instagram' or 'Medium'
+  - `secure` - Boolean true|false depending on http connection
+  - `responsive` - Boolean true|false. `True` if site has `viewport` meta tag present. Basic check for responsiveness
+  - `icon` - site icon
+  - `language` - ISO 639-1 language code, ex: `en`, `es`
+- `page` - info about the page at current URL
+  - `type` - page type, ex: `website`, `article`, `profile`, `video`, etc
+  - `url` - canonical URL for the page
+  - `title` - page title
+  - `description` - page description
+  - `image` - `Array` containing image info, if present:
+    - `url` - image URL
+    - `width` - image width
+    - `height` - image width
+  - `video` - `Array` containing video info, if found on page:
+    - `url` - video URL
+    - `width` - video width
+    - `height` - video width
+- `profile` - info about the content author, ex:
+  - `name` - Author's name on a blog, person's name on social network sites
+  - `handle` - Social media site username
+  - `url` - Author URL for more articles or Profile URL on social network sites
+
+#### `getData(string $section)`
+Get data in one scraped section `site`, `page` or `profile`
+
+**Return:** `Array` with section scraped data. See `getAll` for data format
+
+#### static `on(string $eventName, callable $listener, $priority = 0)`
+Attach an event on `UrlPreview` for data processing or scrape process. Arguments
+- `$eventName` - on which event to listen, available:
+  - `page.scrape` - fired when the scraping process starts
+  - `data.filter` - fired when data is requested by `getData()` or `getAll()` methods
+- `$listener` - a callable reference, which will get the `$event` parameter with available data
+- `priority` - order on which the callable should be executed
+
+
+### Extending the library
+If there's need to more scraped data for a URL, more functionality can be attached to the **PageMeta** library. Example:
 ```
-[
-  'width'       =>  658,
-  'height'      =>  null,
-  'html'        =>  '<html>'
-]
+use Symfony\Component\EventDispatcher\Event;
+
+\Layered\PageMeta\UrlPreview::on('page.scrape', function(Event $event) {
+	$currentScrapedData = $event->getData();	// check data from other scrapers
+	$crawler = $event->getCrawler();			// instance of DomCrawler Symfony Component
+	$termsLink = '';
+
+	$crawler->filter('a[href*=terms]')->each(function($node) use(&$termsLink) {
+		$termsLink = $node->attr('href');
+	});
+
+	// forwards the scraped data
+	$event->addData('site', [
+		'termsLink'	=>	$termsLink
+	]);
+});
 ```
+
 
 ## More
 
