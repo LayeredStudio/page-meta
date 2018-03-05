@@ -65,7 +65,7 @@ class UrlPreview {
 	}
 
 	public function getData(string $section) {
-		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section);
+		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section, $this->crawler);
 		return self::dispatcher()->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
 	}
 
@@ -82,6 +82,19 @@ class UrlPreview {
 		return parse_url($url);
 	}
 
+	public static function getAbsoluteUri($pageUrl, $imageUrl) {
+		if (strpos($imageUrl, 'http') === false) {
+			if ($imageUrl['0'] === '/') {
+				$pageUrl = parse_url($pageUrl);
+				$imageUrl = $pageUrl['scheme'] . '://' . $pageUrl['host'] . $imageUrl;
+			} else {
+				$imageUrl = rtrim($pageUrl, '/') . '/' . $imageUrl;
+			}
+		}
+
+		return $imageUrl;
+	}
+
 }
 
 // Add default scrapers
@@ -94,9 +107,9 @@ UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile',
 UrlPreview::on('data.filter', function(Event $event) {
 	$data = $event->getData();
 
-	if (isset($data['image']) && is_string($data['image']) && filter_var($data['image'], FILTER_VALIDATE_URL)) {
+	if (isset($data['image']) && is_string($data['image'])) {
 		$data['image'] = [
-			'url'	=>	$data['image']
+			'url'	=>	UrlPreview::getAbsoluteUri($event->getCrawler()->getUri(), $data['image'])
 		];
 		$event->setData($data);
 	}
