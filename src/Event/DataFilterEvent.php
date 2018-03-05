@@ -11,10 +11,12 @@ class DataFilterEvent extends Event {
 
 	protected $data;
 	protected $section;
+	protected $crawler;
 
-	public function __construct(array $data, string $section) {
+	public function __construct(array $data, string $section, $crawler) {
 		$this->data = $data;
 		$this->section = $section;
+		$this->crawler = $crawler;
 	}
 
 	public function setData(array $data) {
@@ -27,6 +29,10 @@ class DataFilterEvent extends Event {
 
 	public function getSection() {
 		return $this->section;
+	}
+
+	public function getCrawler() {
+		return $this->crawler;
 	}
 
 }
