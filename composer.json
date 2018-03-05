@@ -6,7 +6,7 @@
     "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
     "require": {
         "fabpot/goutte": "~3.2",
-        "symfony/event-dispatcher": "^4.0"
+        "symfony/event-dispatcher": "~3.4"
     },
     "authors": [
         {
