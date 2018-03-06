@@ -84,7 +84,9 @@ class UrlPreview {
 
 	public static function getAbsoluteUri($pageUrl, $imageUrl) {
 		if (strpos($imageUrl, 'http') === false) {
-			if ($imageUrl['0'] === '/') {
+			if (substr($imageUrl, 0, 2) === '//') {
+				$imageUrl = 'https:' . $imageUrl;
+			} elseif ($imageUrl['0'] === '/') {
 				$pageUrl = parse_url($pageUrl);
 				$imageUrl = $pageUrl['scheme'] . '://' . $pageUrl['host'] . $imageUrl;
 			} else {

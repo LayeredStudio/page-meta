@@ -53,7 +53,7 @@ class SimpleHtml {
 
 			// get the best quality image as icon
 			ksort($site['icon']);
-			$site['icon'] = $site['icon'] ? self::getAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
+			$site['icon'] = $site['icon'] ? \Layered\Pagemeta\UrlPreview::getAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
 
 			// rename 'medium' to 'type' - consistent with OpenGraph field name
 			$page['type'] = $page['medium'];
@@ -68,19 +68,6 @@ class SimpleHtml {
 			$event->addData('extra', $extra);
 		}
 
-	}
-
-	protected static function getAbsoluteUri($pageUrl, $imageUrl) {
-		if (strpos($imageUrl, 'http') === false) {
-			if ($imageUrl['0'] === '/') {
-				$pageUrl = parse_url($pageUrl);
-				$imageUrl = $pageUrl['scheme'] . '://' . $pageUrl['host'] . $imageUrl;
-			} else {
-				$imageUrl = rtrim($pageUrl, '/') . '/' . $imageUrl;
-			}
-		}
-
-		return $imageUrl;
 	}
 
 }
