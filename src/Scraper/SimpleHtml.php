@@ -12,6 +12,8 @@ class SimpleHtml {
 		$crawler = $event->getCrawler();
 
 		if (count($crawler->filter('title'))) {
+			$data = $event->getData();
+
 			$site = [
 				'icon'			=>	[],
 				'language'		=>	current(explode('-', trim($crawler->filter('html')->attr('lang')))),
@@ -51,7 +53,7 @@ class SimpleHtml {
 
 			// get the best quality image as icon
 			ksort($site['icon']);
-			$site['icon'] = $site['icon'] ? self::getAbsoluteUri($crawler->getUri(), current($site['icon'])) : '';
+			$site['icon'] = $site['icon'] ? self::getAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
 
 			// rename 'medium' to 'type' - consistent with OpenGraph field name
 			$page['type'] = $page['medium'];
