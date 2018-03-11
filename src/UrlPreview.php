@@ -36,6 +36,7 @@ class UrlPreview {
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
+		$this->addListener('data.filter', [$this, 'stringUrlToArray']);
 
 		return $this;
 	}
@@ -95,7 +96,7 @@ class UrlPreview {
 		return parse_url($url);
 	}
 
-	protected function stringUrlToArray(Event $event) {
+	public function stringUrlToArray(Event $event) {
 		$data = $event->getData();
 
 		foreach (['image', 'video'] as $field) {

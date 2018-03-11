@@ -73,6 +73,7 @@ Load and start the scrape process for any valid URL
 
 #### `getAll()`
 Get all data scraped from page
+
 **Return:** `Array` with scraped data in following format
 - `site` - info about the website
   - `url` - main site URL
@@ -105,7 +106,7 @@ Get data in one scraped section `site`, `page` or `profile`
 **Return:** `Array` with section scraped data. See `getAll` for data format
 
 #### `addListener(string $eventName, callable $listener, $priority = 0)`
-Attach an event on `UrlPreview` for data processing or scrape process. Arguments
+Attach an event on `UrlPreview` for data processing or scrape process. Arguments:
 - `$eventName` - on which event to listen, available:
   - `page.scrape` - fired when the scraping process starts
   - `data.filter` - fired when data is requested by `getData()` or `getAll()` methods
@@ -114,7 +115,7 @@ Attach an event on `UrlPreview` for data processing or scrape process. Arguments
 
 
 ### Extending the library
-If there's need to more scraped data for a URL, more functionality can be attached to the **PageMeta** library. Example for returing the 'Terms and Conditions' link from pages:
+If there's need to more scraped data for a URL, more functionality can be attached to **PageMeta** library. Example for returing the 'Terms and Conditions' link from pages:
 ```
 use Symfony\Component\EventDispatcher\Event;
 
