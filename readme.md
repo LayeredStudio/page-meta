@@ -1,5 +1,5 @@
 <h1 align="center" style="border-bottom: none;">Page Meta 🕵</h1>
-<h3 align="center">Detailed info for any URL on the internet</h3>
+<h3 align="center">Get detailed info for any URL on the internet</h3>
 
 **Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
 It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
@@ -20,12 +20,12 @@ $ composer require layered/page-meta
 
 #### Usage
 
-Create a `UrlPreview` instance with URL as first argument. Preview data is retrieved with `getData($section)` or `getAll()` methods:
+Create a `UrlPreview` instance, then call `loadUrl($url)` method with desired URL as first argument. Preview data is retrieved with `get($section)` or `getAll()` methods:
 ```
 require 'vendor/autoload.php';
 
-$preview = new Layered\PageMeta\UrlPreview('https://www.instagram.com/p/BbRyo_Kjqt1/');
-$preview->getAll();
+$preview = new Layered\PageMeta\UrlPreview;
+$preview->loadUrl('https://www.instagram.com/p/BbRyo_Kjqt1/')->getAll();
 ```
 
 #### Returned data
@@ -61,7 +61,12 @@ Returned data will be an `Array` with following format:
 ## Public API
 `UrlPreview` class provides the following public methods:
 
-#### `__construct(string $url)`
+#### `__construct(array $headers)`
+Start the UrlPreview instance. Pass extra headers to send when requesting the page URL
+
+**Return:** UrlPreview instance
+
+#### `loadUrl(string $url)`
 Load and start the scrape process for any valid URL
 
 **Return:** UrlPreview instance
@@ -94,12 +99,12 @@ Get all data scraped from page
   - `handle` - Social media site username
   - `url` - Author URL for more articles or Profile URL on social network sites
 
-#### `getData(string $section)`
+#### `get(string $section)`
 Get data in one scraped section `site`, `page` or `profile`
 
 **Return:** `Array` with section scraped data. See `getAll` for data format
 
-#### static `on(string $eventName, callable $listener, $priority = 0)`
+#### `addListener(string $eventName, callable $listener, $priority = 0)`
 Attach an event on `UrlPreview` for data processing or scrape process. Arguments
 - `$eventName` - on which event to listen, available:
   - `page.scrape` - fired when the scraping process starts
@@ -113,7 +118,8 @@ If there's need to more scraped data for a URL, more functionality can be attach
 ```
 use Symfony\Component\EventDispatcher\Event;
 
-\Layered\PageMeta\UrlPreview::on('page.scrape', function(Event $event) {
+$previewer = new \Layered\PageMeta\UrlPreview;
+$previewer->addListener('page.scrape', function(Event $event) {
 	$currentScrapedData = $event->getData();	// check data from other scrapers
 	$crawler = $event->getCrawler();			// instance of DomCrawler Symfony Component
 	$termsLink = '';
@@ -127,6 +133,7 @@ use Symfony\Component\EventDispatcher\Event;
 		'termsLink'	=>	$termsLink
 	]);
 });
+$previewer->loadUrl('http://github.com');
 ```
 
 

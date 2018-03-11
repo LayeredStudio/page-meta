@@ -53,7 +53,7 @@ class SimpleHtml {
 
 			// get the best quality image as icon
 			ksort($site['icon']);
-			$site['icon'] = $site['icon'] ? \Layered\Pagemeta\UrlPreview::getAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
+			$site['icon'] = $site['icon'] ? \Layered\Pagemeta\UrlPreview::makeAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
 
 			// rename 'medium' to 'type' - consistent with OpenGraph field name
 			$page['type'] = $page['medium'];

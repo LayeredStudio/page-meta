@@ -7,34 +7,58 @@ use Goutte\Client;
 use Layered\PageMeta\Event\PageScrapeEvent;
 use Layered\PageMeta\Event\DataFilterEvent;
 
+/**
+ * UrlPreview
+ *
+ * @author Andrei Igna <andrei.igna@layered.studio>
+ */
 class UrlPreview {
-	private static $dispatcher;
 
-	protected $crawler = null;
-	protected $url;
-	protected $data = [
-		'site'		=>	[
-			'secure'	=>	false
-		],
-		'page'		=>	[
-			'type'		=>	'website'
-		],
-		'profile'	=>	[],
-		'extra'		=>	[]
+	private $eventDispatcher;
+	private $headers = [
+		'accept'		=>	'text/html,application/xhtml+xml,application/xml;q=0.9',
+		'user-agent'	=>	'Mozilla/5.0 (compatible; MetaApis/1.0; +https://apis.blue/page-meta)'
 	];
 
-	public function __construct(string $url) {
+	protected $crawler;
+	protected $url;
+	protected $data;
 
-		// check for valid URL
+	public function __construct(array $headers = []) {
+		$this->eventDispatcher = new EventDispatcher();
+		$this->goutteClient = new Client();
+
+		foreach (array_merge($this->headers, $headers) as $header => $content) {
+			$this->goutteClient->setHeader($header, $content);
+		}
+
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
+
+		return $this;
+	}
+
+	public function loadUrl(string $url) {
+		$this->data = [
+			'site'		=>	[
+				'secure'	=>	false
+			],
+			'page'		=>	[
+				'type'		=>	'website'
+			],
+			'profile'	=>	[],
+			'extra'		=>	[]
+		];
+
 		if (!filter_var($url, FILTER_VALIDATE_URL)) {
 			throw new \Exception('Invalid URL');
 		}
 
-		$this->url = $url;
-
 		// load content from URL
-		$client = new Client();
-		$this->crawler = $client->request('GET', $this->url);
+		$this->url = $url;
+		$this->crawler = $this->goutteClient->request('GET', $this->url);
 
 		// extract site info
 		$parsedUrl = $this->parseUrl($this->crawler->getUri());
@@ -43,38 +67,27 @@ class UrlPreview {
 
 		// start scraping page
 		$pageScrapeEvent = new PageScrapeEvent($this->data, $this->crawler);
-		$this->data = self::dispatcher()->dispatch($pageScrapeEvent::NAME, $pageScrapeEvent)->getData();
+		$this->data = $this->eventDispatcher->dispatch($pageScrapeEvent::NAME, $pageScrapeEvent)->getData();
 
 		return $this;
 	}
 
-	public static function load(string $url) {
-		return new static($url);
-	}
-
-	private static function dispatcher() {
-		if (!self::$dispatcher) {
-			self::$dispatcher = new EventDispatcher();
-		}
-
-		return self::$dispatcher;
-	}
-
-	public static function on(string $eventName, callable $listener, $priority = 0) {
-		self::dispatcher()->addListener($eventName, $listener, $priority);
-	}
-
-	public function getData(string $section) {
+	public function get(string $section) {
 		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section, $this->crawler);
-		return self::dispatcher()->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
+		return $this->eventDispatcher->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
 	}
 
 	public function getAll() {
 		return [
-			'site'		=>	$this->getData('site'),
-			'page'		=>	$this->getData('page'),
-			'profile'	=>	$this->getData('profile')
+			'site'		=>	$this->get('site'),
+			'page'		=>	$this->get('page'),
+			'profile'	=>	$this->get('profile')
 		];
+	}
+
+	public function addListener(string $eventName, callable $listener, $priority = 0) {
+		$this->eventDispatcher->addListener($eventName, $listener, $priority);
+		return $this;
 	}
 
 	protected function parseUrl(string $url) {
@@ -82,37 +95,32 @@ class UrlPreview {
 		return parse_url($url);
 	}
 
-	public static function getAbsoluteUri($pageUrl, $imageUrl) {
-		if (strpos($imageUrl, 'http') === false) {
-			if (substr($imageUrl, 0, 2) === '//') {
-				$imageUrl = 'https:' . $imageUrl;
-			} elseif ($imageUrl['0'] === '/') {
-				$pageUrl = parse_url($pageUrl);
-				$imageUrl = $pageUrl['scheme'] . '://' . $pageUrl['host'] . $imageUrl;
+	protected function stringUrlToArray(Event $event) {
+		$data = $event->getData();
+
+		foreach (['image', 'video'] as $field) {
+			if (isset($data[$field]) && is_string($data[$field])) {
+				$data[$field] = [
+					'url'	=>	self::makeAbsoluteUri($event->getCrawler()->getUri(), $data[$field])
+				];
+				$event->setData($data);
+			}
+		}
+	}
+
+	public static function makeAbsoluteUri(string $baseUrl, string $url) {
+		if (strpos($url, 'http') === false) {
+			if (substr($url, 0, 2) === '//') {
+				$url = 'https:' . $url;
+			} elseif ($url['0'] === '/') {
+				$baseUrl = parse_url($baseUrl);
+				$url = $baseUrl['scheme'] . '://' . $baseUrl['host'] . $url;
 			} else {
-				$imageUrl = rtrim($pageUrl, '/') . '/' . $imageUrl;
+				$url = rtrim($baseUrl, '/') . '/' . $url;
 			}
 		}
 
-		return $imageUrl;
+		return $url;
 	}
 
 }
-
-// Add default scrapers
-UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
-UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
-UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
-UrlPreview::on('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
-
-// Convert string image url to image array
-UrlPreview::on('data.filter', function(Event $event) {
-	$data = $event->getData();
-
-	if (isset($data['image']) && is_string($data['image'])) {
-		$data['image'] = [
-			'url'	=>	UrlPreview::getAbsoluteUri($event->getCrawler()->getUri(), $data['image'])
-		];
-		$event->setData($data);
-	}
-});
