@@ -10,6 +10,9 @@ class SiteInfo {
 
 	public static $siteNames = [
 		'nytimes.com'	=>	'NYTimes',
+		'ebay.com'		=>	'eBay',
+		'ebay.es'		=>	'eBay',
+		'ebay.co.uk'	=>	'eBay',
 		'amazon.com'	=>	'Amazon',
 		'amazon.ca'		=>	'Amazon',
 		'amazon.co.uk'	=>	'Amazon',
@@ -18,7 +21,12 @@ class SiteInfo {
 		'amazon.fr'		=>	'Amazon',
 		'amazon.it'		=>	'Amazon',
 		'facebook.com'	=>	'Facebook',
-		'netflix.com'	=>	'Netflix'
+		'netflix.com'	=>	'Netflix',
+		'dribbble.com'	=>	'Dribbble',
+		'medium.com'	=>	'Medium',
+		'twitter.com'	=>	'Twitter',
+		'youtube.com'	=>	'YouTube',
+		'instagram.com'	=>	'Instagram'
 	];
 
 	public static function addSiteNames(Event $event) {

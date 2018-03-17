@@ -10,9 +10,11 @@ use Symfony\Component\EventDispatcher\Event;
 class OpenGraph {
 
 	public static $pageTypes = [
-		'video.other'		=>	'video',
-		'instapp:photo'		=>	'photo',
-		'ebay-objects:item'	=>	'product'
+		'video.other'				=>	'video',
+		'instapp:photo'				=>	'photo',
+		'ebay-objects:item'			=>	'product',
+		'ebay-objects:ecommerce'	=>	'website',
+		'medium-com:collection'		=>	'website'
 	];
 
 	public static function scrape(Event $event) {

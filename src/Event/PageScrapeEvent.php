@@ -22,7 +22,7 @@ class PageScrapeEvent extends Event {
 	}
 
 	public function addData(string $section, array $data) {
-		$this->data[$section] = array_merge($this->data[$section], array_filter($data));
+		$this->data[$section] = array_merge($this->data[$section], array_filter(array_map('trim', $data)));
 	}
 
 	public function getData(): array {
