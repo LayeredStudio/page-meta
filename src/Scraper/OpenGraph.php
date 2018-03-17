@@ -9,6 +9,12 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class OpenGraph {
 
+	public static $pageTypes = [
+		'video.other'		=>	'video',
+		'instapp:photo'		=>	'photo',
+		'ebay-objects:item'	=>	'product'
+	];
+
 	public static function scrape(Event $event) {
 		$crawler = $event->getCrawler();
 
@@ -62,6 +68,12 @@ class OpenGraph {
 			// rename 'site_name' to 'name'
 			$site['name'] = $site['site_name'];
 			unset($site['site_name']);
+
+			$page['type'] = self::$pageTypes[$page['type']] ?? $page['type'];
+
+			if (isset($extra['locale'])) {
+				$site['language'] = current(explode('_', $extra['locale']));
+			}
 
 			// pass along the scraped info
 			$event->addData('site', $site);

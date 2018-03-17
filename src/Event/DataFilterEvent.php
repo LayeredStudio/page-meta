@@ -23,6 +23,10 @@ class DataFilterEvent extends Event {
 		$this->data = $data;
 	}
 
+	public function addData(array $data) {
+		$this->data = array_merge($this->data, array_filter($data));
+	}
+
 	public function getData(): array {
 		return $this->data;
 	}

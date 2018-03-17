@@ -12,8 +12,6 @@ class SimpleHtml {
 		$crawler = $event->getCrawler();
 
 		if (count($crawler->filter('title'))) {
-			$data = $event->getData();
-
 			$site = [
 				'icon'			=>	[],
 				'language'		=>	current(explode('-', trim($crawler->filter('html')->attr('lang')))),
@@ -34,13 +32,14 @@ class SimpleHtml {
 
 			$crawler->filter('meta[name]')->each(function($node) use(&$site, &$page, &$extra) {
 				$metaName = strtolower($node->attr('name'));
+				$content = trim($node->attr('content'));
 
-				if (isset($site[$metaName]) && !empty($node->attr('content'))) {
-					$site[$metaName] = $node->attr('content');
-				} else if (isset($page[$metaName]) && !empty($node->attr('content'))) {
-					$page[$metaName] = $node->attr('content');
+				if (isset($site[$metaName]) && !empty($content)) {
+					$site[$metaName] = $content;
+				} else if (isset($page[$metaName]) && !empty($content)) {
+					$page[$metaName] = $content;
 				} else {
-					$extra[$metaName] = $node->attr('content');
+					$extra[$metaName] = $content;
 				}
 			});
 
@@ -53,7 +52,8 @@ class SimpleHtml {
 
 			// get the best quality image as icon
 			ksort($site['icon']);
-			$site['icon'] = $site['icon'] ? \Layered\Pagemeta\UrlPreview::makeAbsoluteUri($crawler->getUri(), current($site['icon'])) : $data['site']['url'] . '/favicon.ico';
+			$site['icon'] = $site['icon'] ? current($site['icon']) : '/favicon.ico';
+			$site['icon'] = \Layered\Pagemeta\UrlPreview::makeAbsoluteUri($crawler->getUri(), $site['icon']);
 
 			// rename 'medium' to 'type' - consistent with OpenGraph field name
 			$page['type'] = $page['medium'];

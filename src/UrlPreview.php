@@ -32,11 +32,18 @@ class UrlPreview {
 			$this->goutteClient->setHeader($header, $content);
 		}
 
+		// Scrape data from common HTML tags
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\OpenGraph', 'scrape']);
+
+		// Site specific data scrape
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
-		$this->addListener('data.filter', [$this, 'stringUrlToArray']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SiteInfo', 'ecommerceSites']);
+
+		// Filter data to a consistent format across sites
+		$this->addListener('data.filter', ['\Layered\PageMeta\Scraper\SiteInfo', 'addSiteNames']);
+		$this->addListener('data.filter', ['\Layered\PageMeta\Scraper\SiteInfo', 'mediaUrlToArray']);
 
 		return $this;
 	}
@@ -44,7 +51,14 @@ class UrlPreview {
 	public function loadUrl(string $url) {
 		$this->data = [
 			'site'		=>	[
-				'secure'	=>	false
+				'url'			=>	$url,
+				'name'			=>	'',
+				'secure'		=>	false,
+				'responsive'	=>	false,
+				'author'		=>	'',
+				'generator'		=>	'',
+				'icon'			=>	'',
+				'language'		=>	''
 			],
 			'page'		=>	[
 				'type'		=>	'website'
@@ -94,19 +108,6 @@ class UrlPreview {
 	protected function parseUrl(string $url): array {
 		// TODO maybe use a better URL parser
 		return parse_url($url);
-	}
-
-	public function stringUrlToArray(Event $event) {
-		$data = $event->getData();
-
-		foreach (['image', 'video'] as $field) {
-			if (isset($data[$field]) && is_string($data[$field])) {
-				$data[$field] = [
-					'url'	=>	self::makeAbsoluteUri($event->getCrawler()->getUri(), $data[$field])
-				];
-				$event->setData($data);
-			}
-		}
 	}
 
 	public static function makeAbsoluteUri(string $baseUrl, string $url): string {

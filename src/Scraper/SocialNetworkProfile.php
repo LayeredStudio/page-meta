@@ -44,6 +44,7 @@ class SocialNetworkProfile {
 			preg_match('/twitter.com\/([A-Za-z0-9_]{1,15})\/status/', $crawler->getUri(), $urlMatches);
 			preg_match('/^([\s\S]+) on Twitter$/', $data['page']['title'], $titleMatches);
 
+			$page['date'] = date(DATE_ATOM, $crawler->filter('.time > a > span')->attr('data-time'));
 			$page['description'] = trim($data['page']['description'], '“”');
 			$profile = [
 				'name'		=>	$titleMatches[1],
@@ -59,11 +60,11 @@ class SocialNetworkProfile {
 				'username'	=>	trim(str_replace(')', '', $name[1])),
 				'url'		=>	$data['page']['url']
 			];
-		} elseif (strpos($crawler->getUri(), 'instagram.com') !== false && in_array($data['page']['type'], ['instapp:photo', 'video'])) {
+		} elseif (strpos($crawler->getUri(), 'instagram.com') !== false && in_array($data['page']['type'], ['photo', 'video'])) {
 			preg_match('/ - ([\s\S]+) \(@([a-zA-Z0-9._]+)\) on Instagram: “([\s\S]+)”/', $data['page']['description'], $matches);
 
+			$page['title'] = current(explode(':', $data['page']['title']));
 			$page['description'] = $matches[3];
-			$page['type'] = str_replace('instapp:photo', 'photo', $data['page']['type']);
 			$profile = [
 				'name'		=>	$matches[1],
 				'username'	=>	'@' . $matches[2],
