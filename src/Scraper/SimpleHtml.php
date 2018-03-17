@@ -67,7 +67,6 @@ class SimpleHtml {
 			$event->addData('page', $page);
 			$event->addData('extra', $extra);
 		}
-
 	}
 
 }

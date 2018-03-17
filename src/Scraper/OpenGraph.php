@@ -68,7 +68,6 @@ class OpenGraph {
 			$event->addData('page', $page);
 			$event->addData('extra', $extra);
 		}
-
 	}
 
 	protected static function guessFieldType($string) {

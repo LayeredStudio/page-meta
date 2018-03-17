@@ -73,12 +73,12 @@ class UrlPreview {
 		return $this;
 	}
 
-	public function get(string $section) {
+	public function get(string $section): array {
 		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section, $this->crawler);
 		return $this->eventDispatcher->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
 	}
 
-	public function getAll() {
+	public function getAll(): array {
 		return [
 			'site'		=>	$this->get('site'),
 			'page'		=>	$this->get('page'),
@@ -91,7 +91,7 @@ class UrlPreview {
 		return $this;
 	}
 
-	protected function parseUrl(string $url) {
+	protected function parseUrl(string $url): array {
 		// TODO maybe use a better URL parser
 		return parse_url($url);
 	}
@@ -109,7 +109,7 @@ class UrlPreview {
 		}
 	}
 
-	public static function makeAbsoluteUri(string $baseUrl, string $url) {
+	public static function makeAbsoluteUri(string $baseUrl, string $url): string {
 		if (strpos($url, 'http') === false) {
 			if (substr($url, 0, 2) === '//') {
 				$url = 'https:' . $url;

@@ -30,7 +30,6 @@ class Tracking {
 			// pass along the scraped info
 			$event->addData('site', $site);
 		}
-
 	}
 
 }

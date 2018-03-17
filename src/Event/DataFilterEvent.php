@@ -23,11 +23,11 @@ class DataFilterEvent extends Event {
 		$this->data = $data;
 	}
 
-	public function getData() {
+	public function getData(): array {
 		return $this->data;
 	}
 
-	public function getSection() {
+	public function getSection(): string {
 		return $this->section;
 	}
 

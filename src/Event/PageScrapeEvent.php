@@ -25,7 +25,7 @@ class PageScrapeEvent extends Event {
 		$this->data[$section] = array_merge($this->data[$section], array_filter($data));
 	}
 
-	public function getData() {
+	public function getData(): array {
 		return $this->data;
 	}
 
