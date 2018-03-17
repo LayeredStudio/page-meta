@@ -37,7 +37,7 @@ class OpenGraph {
 
 			$crawler->filter('meta[property^="og:"]')->each(function($node) use(&$data) {
 				$property = substr($node->attr('property'), 3);
-				$content = $node->attr('content');
+				$content = trim($node->attr('content'));
 
 				if (strpos($property, ':') !== false) {
 					$property = explode(':', $property, 2);

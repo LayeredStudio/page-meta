@@ -49,6 +49,8 @@ class ArticleInfo {
 				}
 			}
 
+			$profile['name'] = trim($profile['name']);
+
 			if (!$profile['url']) {
 				$authorLinks = $crawler->filter('a[href*="/author"]');
 				if (count($authorLinks)) {
@@ -71,7 +73,6 @@ class ArticleInfo {
 					$page['date'] = $dateElement->attr('datetime');
 				}
 			}
-
 		}
 
 		if (strpos($crawler->getUri(), 'nytimes.com') !== false) {
