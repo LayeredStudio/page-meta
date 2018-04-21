@@ -4,24 +4,24 @@
     "type": "library",
     "license": "MIT",
     "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
-    "require": {
-        "fabpot/goutte": "~3.2",
-        "symfony/event-dispatcher": "~3.4"
-    },
     "authors": [
         {
             "name": "Andrei Igna",
             "email": "andrei.igna@layered.studio"
         }
     ],
-    "scripts": {
-        "test": "phpunit",
-        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
-        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+    "require": {
+        "fabpot/goutte": "~3.2",
+        "symfony/event-dispatcher": "~4.0"
     },
     "autoload": {
         "psr-4": {
             "Layered\\PageMeta\\": "src/"
         }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
     }
 }
