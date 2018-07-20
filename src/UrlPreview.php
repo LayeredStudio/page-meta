@@ -44,6 +44,7 @@ class UrlPreview {
 
 		// Filter data to a consistent format across sites
 		$this->addListener('data.filter', ['\Layered\PageMeta\Scraper\SiteInfo', 'addSiteNames']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SiteInfo', 'siteNameFromHtml']);
 		$this->addListener('data.filter', ['\Layered\PageMeta\Scraper\SiteInfo', 'mediaUrlToArray']);
 
 		return $this;

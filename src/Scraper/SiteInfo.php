@@ -26,7 +26,8 @@ class SiteInfo {
 		'medium.com'	=>	'Medium',
 		'twitter.com'	=>	'Twitter',
 		'youtube.com'	=>	'YouTube',
-		'instagram.com'	=>	'Instagram'
+		'instagram.com'	=>	'Instagram',
+		'trello.com'	=>	'Trello'
 	];
 
 	public static function addSiteNames(Event $event) {
@@ -39,6 +40,18 @@ class SiteInfo {
 				$data['name'] = self::$siteNames[$host];
 				$event->setData($data);
 			}
+		}
+	}
+
+	public static function siteNameFromHtml(Event $event) {
+		$crawler = $event->getCrawler();
+		$data = $event->getData();
+		$parsedUrl = parse_url($crawler->getUri());
+
+		if (!isset($parsedUrl['query'], $parsedUrl['path'])) {
+			$event->addData('site', [
+				'name'	=>	$data['page']['title']
+			]);
 		}
 	}
 
