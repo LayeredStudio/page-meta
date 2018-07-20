@@ -48,7 +48,7 @@ class SiteInfo {
 		$data = $event->getData();
 		$parsedUrl = parse_url($crawler->getUri());
 
-		if (!isset($parsedUrl['query'], $parsedUrl['path'])) {
+		if (empty($data['site']['name']) && !isset($parsedUrl['query']) && !isset($parsedUrl['path'])) {
 			$event->addData('site', [
 				'name'	=>	$data['page']['title']
 			]);
