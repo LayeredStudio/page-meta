@@ -54,6 +54,20 @@ Returned data will be an `Array` with following format:
 		"name":			"GitHub",
 		"username":		"@github",
 		"url":			"https:\/\/www.instagram.com\/github\/"
+	},
+	"app_links": {
+		"ios": {
+			"url": "nflx:\/\/www.netflix.com\/title\/80014749",
+			"app_store_id": "363590051",
+			"app_name": "Netflix",
+			"store_url": "https:\/\/itunes.apple.com\/us\/app\/Netflix\/id363590051"
+		},
+		"android": {
+			"url": "nflx:\/\/www.netflix.com\/title\/80014749",
+			"package": "com.netflix.mediaclient",
+			"app_name": "Netflix",
+			"store_url": "https:\/\/play.google.com\/store\/apps\/details?id=com.netflix.mediaclient"
+		}
 	}
 }
 ```
@@ -88,20 +102,31 @@ Get all data scraped from page
   - `title` - page title
   - `description` - page description
   - `image` - `Array` containing image info, if present:
-    - `url` - image URL
-    - `width` - image width
-    - `height` - image width
+	- `url` - image URL
+	- `width` - image width
+	- `height` - image width
   - `video` - `Array` containing video info, if found on page:
-    - `url` - video URL
-    - `width` - video width
-    - `height` - video width
+	- `url` - video URL
+	- `width` - video width
+	- `height` - video width
 - `profile` - info about the content author, ex:
   - `name` - Author's name on a blog, person's name on social network sites
   - `handle` - Social media site username
   - `url` - Author URL for more articles or Profile URL on social network sites
+- `app_links` - `Array` containing apps linked to page, like:
+  - `ios` - iOS app
+	- `url` - link for in-app action, ex: 'nflx://www.netflix.com/title/80014749'
+	- `app_store_id` - Apple AppStore app ID
+	- `app_name` - name of the app
+	- `store_url` - link to installable app
+  - `android` - Android app
+	- `url` - link for in-app action, ex: 'nflx://www.netflix.com/title/80014749'
+	- `package` - Android PlayStore app ID
+	- `app_name` - name of the app
+	- `store_url` - link to installable app
 
 #### `get(string $section)`
-Get data in one scraped section `site`, `page` or `profile`
+Get data in one scraped section `site`, `page`, `profile` or `app_links`
 
 **Return:** `Array` with section scraped data. See `getAll` for data format
 

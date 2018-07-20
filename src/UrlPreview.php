@@ -40,6 +40,7 @@ class UrlPreview {
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\ArticleInfo', 'scrape']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SocialNetworkProfile', 'getProfiles']);
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SiteInfo', 'ecommerceSites']);
+		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SiteInfo', 'appLinks']);
 
 		// Filter data to a consistent format across sites
 		$this->addListener('data.filter', ['\Layered\PageMeta\Scraper\SiteInfo', 'addSiteNames']);
@@ -64,6 +65,7 @@ class UrlPreview {
 				'type'		=>	'website'
 			],
 			'profile'	=>	[],
+			'app_links'	=>	[],
 			'extra'		=>	[]
 		];
 
@@ -96,7 +98,8 @@ class UrlPreview {
 		return [
 			'site'		=>	$this->get('site'),
 			'page'		=>	$this->get('page'),
-			'profile'	=>	$this->get('profile')
+			'profile'	=>	$this->get('profile'),
+			'app_links'	=>	$this->get('app_links')
 		];
 	}
 
