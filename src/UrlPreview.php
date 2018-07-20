@@ -50,7 +50,7 @@ class UrlPreview {
 		return $this;
 	}
 
-	public function loadUrl(string $url) {
+	public function loadUrl(string $url): self {
 		$this->data = [
 			'site'		=>	[
 				'url'			=>	$url,
@@ -104,7 +104,7 @@ class UrlPreview {
 		];
 	}
 
-	public function addListener(string $eventName, callable $listener, $priority = 0) {
+	public function addListener(string $eventName, callable $listener, int $priority = 0): self {
 		$this->eventDispatcher->addListener($eventName, $listener, $priority);
 		return $this;
 	}

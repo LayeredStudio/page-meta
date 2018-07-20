@@ -130,7 +130,7 @@ Get data in one scraped section `site`, `page`, `profile` or `app_links`
 
 **Return:** `Array` with section scraped data. See `getAll` for data format
 
-#### `addListener(string $eventName, callable $listener, $priority = 0)`
+#### `addListener(string $eventName, callable $listener, int $priority = 0)`
 Attach an event on `UrlPreview` for data processing or scrape process. Arguments:
 - `$eventName` - on which event to listen, available:
   - `page.scrape` - fired when the scraping process starts

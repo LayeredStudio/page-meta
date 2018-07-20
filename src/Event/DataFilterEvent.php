@@ -2,6 +2,7 @@
 namespace Layered\PageMeta\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Dispatched each time data is retuned
@@ -13,7 +14,7 @@ class DataFilterEvent extends Event {
 	protected $section;
 	protected $crawler;
 
-	public function __construct(array $data, string $section, $crawler) {
+	public function __construct(array $data, string $section, Crawler $crawler) {
 		$this->data = $data;
 		$this->section = $section;
 		$this->crawler = $crawler;
@@ -35,7 +36,7 @@ class DataFilterEvent extends Event {
 		return $this->section;
 	}
 
-	public function getCrawler() {
+	public function getCrawler(): Crawler {
 		return $this->crawler;
 	}
 

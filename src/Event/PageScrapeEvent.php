@@ -2,6 +2,7 @@
 namespace Layered\PageMeta\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Dispatched each time a page scrape is started
@@ -12,7 +13,7 @@ class PageScrapeEvent extends Event {
 	protected $data;
 	protected $crawler;
 
-	public function __construct(array $data, $crawler) {
+	public function __construct(array $data, Crawler $crawler) {
 		$this->data = $data;
 		$this->crawler = $crawler;
 	}
@@ -29,7 +30,7 @@ class PageScrapeEvent extends Event {
 		return $this->data;
 	}
 
-	public function getCrawler() {
+	public function getCrawler(): Crawler {
 		return $this->crawler;
 	}
 
