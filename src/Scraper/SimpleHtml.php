@@ -1,7 +1,7 @@
 <?php
 namespace Layered\PageMeta\Scraper;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Scrape data available in meta tags

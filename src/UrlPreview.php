@@ -2,7 +2,7 @@
 namespace Layered\PageMeta;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goutte\Client;
 use Layered\PageMeta\Event\PageScrapeEvent;
 use Layered\PageMeta\Event\DataFilterEvent;
@@ -16,8 +16,8 @@ class UrlPreview {
 
 	private $eventDispatcher;
 	private $headers = [
-		'accept'		=>	'text/html,application/xhtml+xml,application/xml;q=0.9',
-		'user-agent'	=>	'Mozilla/5.0 (compatible; MetaApis/1.0; +https://apis.blue/page-meta)'
+		'HTTP_ACCEPT'		=>	'text/html,application/xhtml+xml,application/xml;q=0.9',
+		'HTTP_USER_AGENT'	=>	'Mozilla/5.0 (compatible; PageMeta/1.0; +https://layered.dev)'
 	];
 
 	protected $crawler;
@@ -27,10 +27,7 @@ class UrlPreview {
 	public function __construct(array $headers = []) {
 		$this->eventDispatcher = new EventDispatcher();
 		$this->goutteClient = new Client();
-
-		foreach (array_merge($this->headers, $headers) as $header => $content) {
-			$this->goutteClient->setHeader($header, $content);
-		}
+		$this->goutteClient->setServerParameters(array_merge($this->headers, $headers));
 
 		// Scrape data from common HTML tags
 		$this->addListener('page.scrape', ['\Layered\PageMeta\Scraper\SimpleHtml', 'scrape']);
@@ -85,14 +82,14 @@ class UrlPreview {
 
 		// start scraping page
 		$pageScrapeEvent = new PageScrapeEvent($this->data, $this->crawler);
-		$this->data = $this->eventDispatcher->dispatch($pageScrapeEvent::NAME, $pageScrapeEvent)->getData();
+		$this->data = $this->eventDispatcher->dispatch($pageScrapeEvent, PageScrapeEvent::NAME)->getData();
 
 		return $this;
 	}
 
 	public function get(string $section): array {
 		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section, $this->crawler);
-		return $this->eventDispatcher->dispatch($dataFilterEvent::NAME, $dataFilterEvent)->getData();
+		return $this->eventDispatcher->dispatch($dataFilterEvent, DataFilterEvent::NAME)->getData();
 	}
 
 	public function getAll(): array {

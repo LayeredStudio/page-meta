@@ -1,7 +1,7 @@
 <?php
 namespace Layered\PageMeta\Scraper;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Scrape data related to news, blog posts and articles
@@ -84,7 +84,7 @@ class ArticleInfo {
 
 		// pass along the scraped info
 		$event->addData('page', $page);
-		$event->addData('profile', $profile);
+		$event->addData('author', $profile);
 	}
 
 }

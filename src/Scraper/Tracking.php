@@ -1,7 +1,7 @@
 <?php
 namespace Layered\PageMeta\Scraper;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Check page markup for tracking snippets

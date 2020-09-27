@@ -2,7 +2,7 @@
 
 namespace Layered\PageMeta\Scraper;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Scrape OpenGraph data

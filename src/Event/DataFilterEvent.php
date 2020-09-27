@@ -1,14 +1,14 @@
 <?php
 namespace Layered\PageMeta\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Dispatched each time data is retuned
  */
 class DataFilterEvent extends Event {
-	const NAME = 'data.filter';
+	public const NAME = 'data.filter';
 
 	protected $data;
 	protected $section;

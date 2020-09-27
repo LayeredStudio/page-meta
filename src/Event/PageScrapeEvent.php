@@ -1,14 +1,14 @@
 <?php
 namespace Layered\PageMeta\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Dispatched each time a page scrape is started
  */
 class PageScrapeEvent extends Event {
-	const NAME = 'page.scrape';
+	public const NAME = 'page.scrape';
 
 	protected $data;
 	protected $crawler;
