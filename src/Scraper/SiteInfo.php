@@ -83,7 +83,7 @@ class SiteInfo {
 		} elseif (strpos($crawler->getUri(), 'ebay.') !== false) {
 			$sellerLink = $crawler->filter('a[href*="/usr"]');
 			if (count($sellerLink)) {
-				$event->addData('profile', [
+				$event->addData('author', [
 					'name'	=>	$sellerLink->text(),
 					'url'	=>	$sellerLink->attr('href')
 				]);

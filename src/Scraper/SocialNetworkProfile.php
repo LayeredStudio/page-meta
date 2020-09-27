@@ -23,7 +23,7 @@ class SocialNetworkProfile {
 			$page['type'] = 'profile';
 			$profile = [
 				'name'		=>	$titleMatches[1],
-				'username'	=>	'@' . $titleMatches[2],
+				'handle'	=>	'@' . $titleMatches[2],
 				'url'		=>	$crawler->getUri()
 			];
 
@@ -48,7 +48,7 @@ class SocialNetworkProfile {
 			$page['description'] = trim($data['page']['description'], '“”');
 			$profile = [
 				'name'		=>	$titleMatches[1],
-				'username'	=>	'@' . $urlMatches[1],
+				'handle'	=>	'@' . $urlMatches[1],
 				'url'		=>	'https://twitter.com/' . $urlMatches[1]
 			];
 		} elseif (strpos($crawler->getUri(), 'instagram.com') !== false && $data['page']['type'] == 'profile') {
@@ -57,7 +57,7 @@ class SocialNetworkProfile {
 
 			$profile = [
 				'name'		=>	trim($name[0]),
-				'username'	=>	trim(str_replace(')', '', $name[1])),
+				'handle'	=>	trim(str_replace(')', '', $name[1])),
 				'url'		=>	$data['page']['url']
 			];
 		} elseif (strpos($crawler->getUri(), 'instagram.com') !== false && in_array($data['page']['type'], ['photo', 'video'])) {
@@ -67,14 +67,14 @@ class SocialNetworkProfile {
 			$page['description'] = $matches[3];
 			$profile = [
 				'name'		=>	$matches[1],
-				'username'	=>	'@' . $matches[2],
+				'handle'	=>	'@' . $matches[2],
 				'url'		=>	'https://www.instagram.com/' . $matches[2] . '/'
 			];
 		}
 
 		$event->addData('site', $site);
 		$event->addData('page', $page);
-		$event->addData('profile', $profile);
+		$event->addData('author', $profile);
 	}
 
 }

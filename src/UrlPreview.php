@@ -62,7 +62,7 @@ class UrlPreview {
 			'page'		=>	[
 				'type'		=>	'website'
 			],
-			'profile'	=>	[],
+			'author'	=>	[],
 			'app_links'	=>	[],
 			'extra'		=>	[]
 		];
@@ -96,7 +96,7 @@ class UrlPreview {
 		return [
 			'site'		=>	$this->get('site'),
 			'page'		=>	$this->get('page'),
-			'profile'	=>	$this->get('profile'),
+			'author'	=>	$this->get('author'),
 			'app_links'	=>	$this->get('app_links')
 		];
 	}

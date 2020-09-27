@@ -50,9 +50,9 @@ Returned data will be an `Array` with following format:
 			"url": "https:\/\/scontent-mad1-1.cdninstagram.com\/vp\/73b1790d77548031327e64ee83196706\/5B4AD567\/t51.2885-15\/e35\/23421974_1768724519826754_3855913942043852800_n.jpg"
 		}
 	},
-	"profile": {
+	"author": {
 		"name":			"GitHub",
-		"username":		"@github",
+		"handle":		"@github",
 		"url":			"https:\/\/www.instagram.com\/github\/"
 	},
 	"app_links": {
@@ -109,7 +109,7 @@ Get all data scraped from page
 	- `url` - video URL
 	- `width` - video width
 	- `height` - video width
-- `profile` - info about the content author, ex:
+- `author` - info about the content author, ex:
   - `name` - Author's name on a blog, person's name on social network sites
   - `handle` - Social media site username
   - `url` - Author URL for more articles or Profile URL on social network sites
