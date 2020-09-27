@@ -10,7 +10,7 @@ use Layered\PageMeta\Event\DataFilterEvent;
 /**
  * UrlPreview
  *
- * @author Andrei Igna <andrei.igna@layered.studio>
+ * @author Andrei Igna <andrei@laye.red>
  */
 class UrlPreview {
 

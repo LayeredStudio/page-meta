@@ -4,7 +4,12 @@
 **Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
 It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
 
-## Use cases
+## Highlights
+- Works for any valid URL on the internet!
+- Follows page redirects
+- Uses all scraping methods available: HTML tags, OpenGraph, Schema data
+
+## Potention use cases
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
 * Extract info from a user-submitted URL
@@ -20,12 +25,15 @@ $ composer require layered/page-meta
 
 #### Usage
 
-Create a `UrlPreview` instance, then call `loadUrl($url)` method with desired URL as first argument. Preview data is retrieved with `get($section)` or `getAll()` methods:
+Create a `UrlPreview` instance, then call `loadUrl($url)` method with your URL as first argument. Preview data is retrieved with `get($section)` or `getAll()` methods:
 ```
 require 'vendor/autoload.php';
 
 $preview = new Layered\PageMeta\UrlPreview;
-$preview->loadUrl('https://www.instagram.com/p/BbRyo_Kjqt1/')->getAll();
+$preview->loadUrl('https://www.instagram.com/p/BbRyo_Kjqt1/');
+
+$allPageData = $preview->getAll();	// contains all scraped data
+$siteInfo = $preview->get('site');	// get general info about the website
 ```
 
 #### Returned data
@@ -78,12 +86,12 @@ Returned data will be an `Array` with following format:
 #### `__construct(array $headers)`
 Start the UrlPreview instance. Pass extra headers to send when requesting the page URL
 
-**Return:** UrlPreview instance
+**Returns:** UrlPreview instance
 
 #### `loadUrl(string $url)`
 Load and start the scrape process for any valid URL
 
-**Return:** UrlPreview instance
+**Returns:** UrlPreview instance
 
 #### `getAll()`
 Get all data scraped from page
