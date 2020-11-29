@@ -1,5 +1,4 @@
-<h1 align="center" style="border-bottom: none;">Page Meta 🕵</h1>
-<h3 align="center">Get detailed info for any URL on the internet</h3>
+# Page Meta 🕵
 
 **Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
 It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
@@ -9,10 +8,12 @@ It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback t
 - Follows page redirects
 - Uses all scraping methods available: HTML tags, OpenGraph, Schema data
 
-## Potention use cases
+## Potential use cases
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
 * Extract info from a user-submitted URL
+
+<img alt="layered-page-meta-link-card" src="https://user-images.githubusercontent.com/263021/100539808-35ad3300-3239-11eb-8f47-381153246e32.png">
 
 ## How to use
 
@@ -83,21 +84,18 @@ Returned data will be an `Array` with following format:
 ## Public API
 `UrlPreview` class provides the following public methods:
 
-#### `__construct(array $headers)`
+#### `__construct(array $headers): UrlPreview`
 Start the UrlPreview instance. Pass extra headers to send when requesting the page URL
 
-**Returns:** UrlPreview instance
-
-#### `loadUrl(string $url)`
+#### `loadUrl(string $url): UrlPreview`
 Load and start the scrape process for any valid URL
 
-**Returns:** UrlPreview instance
-
-#### `getAll()`
+#### `getAll(): array`
 Get all data scraped from page
 
-**Return:** `Array` with scraped data in following format
-- `site` - info about the website
+<details>
+  <summary>See detailed returned data</summary>
+  - `site` - info about the website
   - `url` - main site URL
   - `name` - site name, ex: 'Instagram' or 'Medium'
   - `secure` - Boolean true|false depending on http connection
@@ -132,13 +130,14 @@ Get all data scraped from page
 	- `package` - Android PlayStore app ID
 	- `app_name` - name of the app
 	- `store_url` - link to installable app
+</details>
 
-#### `get(string $section)`
+#### `get(string $section): array`
 Get data in one scraped section `site`, `page`, `profile` or `app_links`
 
 **Return:** `Array` with section scraped data. See `getAll` for data format
 
-#### `addListener(string $eventName, callable $listener, int $priority = 0)`
+#### `addListener(string $eventName, callable $listener, int $priority = 0): UrlPreview`
 Attach an event on `UrlPreview` for data processing or scrape process. Arguments:
 - `$eventName` - on which event to listen, available:
   - `page.scrape` - fired when the scraping process starts
