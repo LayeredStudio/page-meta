@@ -46,7 +46,9 @@ If you would like to extract a new field, see [Extending the library](#extending
 
 User Agent or extra headers can make a big difference when downloading HTML from a website.
 There are some websites that forbid scraping and hide the content when they detect a tool like this one. Make sure to read their dev docs & TOS.
+
 The default User Agent is blocked on sites like Twitter, Instagram, Facebook and others. A workaround is to use this one (thanks for the tip [PVGrad](https://github.com/LayeredStudio/page-meta/issues/2)):
+
 `'HTTP_USER_AGENT'	=>	'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'`
 
 #### Returned data
@@ -146,11 +148,11 @@ Get all data scraped from page
 #### `get(string $section): array`
 Get data in one scraped section `site`, `page`, `profile` or `app_links`
 
-**Return:** `Array` with section scraped data. See `getAll` for data format
+**Return:** `Array` with section scraped data. See [`UrlPreview::getAll()`](#getall-array) for data format
 
 #### `addListener(string $eventName, callable $listener, int $priority = 0): UrlPreview`
 Attach an event on `UrlPreview` for data processing or scrape process. Arguments:
-- `$eventName` - on which event to listen, available:
+- `$eventName` - on which event to listen. Available:
   - `page.scrape` - fired when the scraping process starts
   - `data.filter` - fired when data is requested by `getData()` or `getAll()` methods
 - `$listener` - a callable reference, which will get the `$event` parameter with available data
