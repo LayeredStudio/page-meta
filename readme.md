@@ -3,12 +3,12 @@
 **Page Meta** is a PHP library than can retrieve detailed info on any URL from the internet!
 It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback to detailed HTML scraping.
 
-## Highlights
+### Highlights
 - Works for any valid URL on the internet!
 - Follows page redirects
 - Uses all scraping methods available: HTML tags, OpenGraph, Schema data
 
-## Potential use cases
+### Potential use cases
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
 * Extract info from a user-submitted URL
@@ -29,12 +29,25 @@ Create a `UrlPreview` instance, then call `loadUrl($url)` method with your URL a
 ```
 require 'vendor/autoload.php';
 
-$preview = new Layered\PageMeta\UrlPreview;
+$preview = new Layered\PageMeta\UrlPreview([
+	'HTTP_USER_AGENT'	=>	'Mozilla/5.0 (compatible; YourApp/1.0; +https://example.com)'
+]);
 $preview->loadUrl('https://www.instagram.com/p/BbRyo_Kjqt1/');
 
 $allPageData = $preview->getAll();	// contains all scraped data
 $siteInfo = $preview->get('site');	// get general info about the website
 ```
+
+#### Behind the scenes
+
+The library downloads the HTML source of the url you provided, then uses specialized scrapers to extract pieces of information.
+Core scrapers can be seen in `src/scrapers/`, and they extract general info for a page: title, author, description, page type, main image, etc.
+If you would like to extract a new field, see [Extending the library](#extending-the-library) section.
+
+User Agent or extra headers can make a big difference when downloading HTML from a website.
+There are some websites that forbid scraping and hide the content when they detect a tool like this one. Make sure to read their dev docs & TOS.
+The default User Agent is blocked on sites like Twitter, Instagram, Facebook and others. A workaround is to use this one (thanks for the tip [PVGrad](https://github.com/LayeredStudio/page-meta/issues/2)):
+`'HTTP_USER_AGENT'	=>	'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'`
 
 #### Returned data
 
@@ -79,6 +92,7 @@ Returned data will be an `Array` with following format:
 	}
 }
 ```
+See [`UrlPreview::getAll()`](#getall-array) for info on each returned field.
 
 ## Public API
 `UrlPreview` class provides the following public methods:
@@ -92,8 +106,7 @@ Load and start the scrape process for any valid URL
 #### `getAll(): array`
 Get all data scraped from page
 
-<details>
-<summary>See detailed returned data</summary>
+**Return:** `Array` with scraped data in following format:
 - `site` - info about the website
   - `url` - main site URL
   - `name` - site name, ex: 'Instagram' or 'Medium'
@@ -129,7 +142,6 @@ Get all data scraped from page
 	- `package` - Android PlayStore app ID
 	- `app_name` - name of the app
 	- `store_url` - link to installable app
-</details>
 
 #### `get(string $section): array`
 Get data in one scraped section `site`, `page`, `profile` or `app_links`
