@@ -38,7 +38,7 @@ final class SocialSitesTest extends TestCase {
 		$data = $fb->getAll();
 
 		$this->assertEquals('Facebook', $data['site']['name']);
-		$this->assertEquals('Key & Peele', $data['page']['title']);
+		// TODO add test for image
 	}
 
 	public function testFacebookPage(): void {

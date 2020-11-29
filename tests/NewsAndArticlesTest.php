@@ -88,7 +88,7 @@ final class NewsAndArticlesTest extends TestCase {
 		$data = $fb->getAll();
 
 		// site details
-		$this->assertEquals('https://medium.com', $data['site']['url']);
+		$this->assertEquals('https://ev.medium.com', $data['site']['url']);
 		$this->assertEquals('Medium', $data['site']['name']);
 
 		// article details
