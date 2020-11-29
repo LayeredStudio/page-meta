@@ -12,8 +12,7 @@ It uses data from HTML meta tags and [OpenGraph](http://ogp.me/) with fallback t
 * Display Info Cards for links in a article
 * Rich preview for links in messaging apps
 * Extract info from a user-submitted URL
-
-<img alt="layered-page-meta-link-card" src="https://user-images.githubusercontent.com/263021/100539808-35ad3300-3239-11eb-8f47-381153246e32.png">
+<img width="350" alt="layered-page-meta-link-card" src="https://user-images.githubusercontent.com/263021/100539808-35ad3300-3239-11eb-8f47-381153246e32.png">
 
 ## How to use
 
@@ -94,8 +93,8 @@ Load and start the scrape process for any valid URL
 Get all data scraped from page
 
 <details>
-  <summary>See detailed returned data</summary>
-  - `site` - info about the website
+<summary>See detailed returned data</summary>
+- `site` - info about the website
   - `url` - main site URL
   - `name` - site name, ex: 'Instagram' or 'Medium'
   - `secure` - Boolean true|false depending on http connection
