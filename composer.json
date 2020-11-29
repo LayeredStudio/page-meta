@@ -1,9 +1,9 @@
 {
     "name": "layered/page-meta",
-    "description": "Get preview data on any URL from the internet!",
+    "description": "Get detailed info for any URL on the internet! Scraper for HTML, OpenGraph, Schema data",
     "type": "library",
     "license": "MIT",
-    "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed"],
+    "keywords": ["scraper", "url-preview", "link-preview", "opengraph", "embed", "oembed", "schema"],
     "authors": [
         {
             "name": "Andrei Igna",
