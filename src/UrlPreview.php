@@ -88,7 +88,7 @@ class UrlPreview {
 	}
 
 	public function get(string $section): array {
-		$dataFilterEvent = new DataFilterEvent($this->data[$section], $section, $this->crawler);
+		$dataFilterEvent = new DataFilterEvent($this->data[$section] ?? [], $section, $this->crawler);
 		return $this->eventDispatcher->dispatch($dataFilterEvent, DataFilterEvent::NAME)->getData();
 	}
 
